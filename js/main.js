@@ -1,67 +1,141 @@
-let cards = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+let firstTab = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+let secondTab = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+let compareElts = [];
+
 let row = document.querySelector('.row');
-let randomCards = [];
-let temp;
-let random;
 
-//console.log(random);
+function randomTab(tab) {
 
-for (let i = 0; i < cards.length; i++) {
-    console.log('cards length', cards.length);
-    
-    random = Math.floor(Math.random() * cards.length);
-    console.log('random', random);
+    let randomCards = [];
+    let temp;
+    let random;
+    let tabLength = tab.length;
 
-    for (let card of randomCards) {
+    for (let i = 0; i < tabLength; i++) {
 
-
-        if (random == card) {
-            random = Math.floor(Math.random() * cards.length);
-        } else {
-            randomCards.push(random);
-        }
-
+        random = Math.floor(Math.random() * tab.length);
+        temp = tab.splice(random, 1);
+        randomCards = randomCards.concat(temp);
     }
-
-    console.log(randomCards);
-
-
-    /* cards.find(elt => {
-
-        if (elt === random) {
-            console.log(elt);
-            temp = cards.splice(cards.indexOf(random), 1);
-            randomCards = randomCards.concat(temp);
-            console.log(randomCards);
-        }
-        randomCards = randomCards.concat(cards);
-    }) */
-
-
+    return randomCards;
 }
-
-
-
-
-
-
-
-
-
 
 function init() {
 
-    for (let i = 0; i < randomCards.length; i++) {
+    for (let i = 0; i < finalTab.length; i++) {
         let col = document.createElement('div');
         col.setAttribute('class', 'col-3');
-        col.onclick = () => showCard(i);
-        col.textContent = randomCards[i];
+        //col.onclick = () => chooseCard(finalTab[i]);
+        col.textContent = finalTab[i];
         row.appendChild(col);
     }
 }
 
+function chooseCard(element) {
+    compareElts.push(element);
+}
+
+firstTab = randomTab(firstTab);
+secondTab = randomTab(secondTab).reverse();
+const finalTab = firstTab.concat(secondTab);
+console.log(finalTab);
+
 init();
 
-function showCard(index) {
-    console.log(index);
+let divs = document.querySelectorAll('div[class=col-3]');
+
+
+
+for (let i = 0; i < divs.length; i++) {
+    divs[i].addEventListener('click', () => {
+
+        compareElts.push(divs[i].textContent);
+        console.log(divs[i].textContent);
+
+        if (compareElts.length == 2) {
+
+            if (compareElts[0] == compareElts[1]) {
+
+                console.log('gagné');
+            } else if (compareElts[0] != compareElts[1]) {
+                compareElts = [];
+            }
+
+
+        }
+
+    });
+
 }
+
+
+
+
+
+/*
+//-------------------------------
+// entree : le tableau a randommer
+// sortie : le tableau randomme
+//-------------------------------
+function Rand_Tableau( tab_){
+    var i;
+    var Num;
+    var Nbr = tab_.length; // 10
+    var Tab = tab_; // cards
+    //-- Lance la boucle
+    while( Nbr> 0){
+      //-- Recup nombre aleatoire
+      Num = Math.floor(Math.random() * Nbr);
+      console.log('Num', Num);
+      //-- 1 de moins a traiter
+      Nbr--;
+      //-- Stock element tire
+      szTmp = Tab[Num];
+      console.log('szTmp', szTmp);
+      //-- Decalage des valeurs du tableau
+      for( i= Num; i < Nbr; i++)
+        Tab[i] = Tab[i+1]
+        console.log('Tab[i]', Tab[i]);
+      //-- Stock l'element tire en fin
+      Tab[ Nbr] = szTmp;
+      console.log('Tab[ Nbr]', Tab[ Nbr]);
+    }
+    //-- On peut remettre dans l'ordre du tirage
+    Tab.reverse();
+    //-- Retourne resultat
+    return( Tab);
+  }
+
+    //-- Random du tableau
+    Tab = Rand_Tableau(cards);
+
+//console.log(random);
+
+// exemple 2 :
+function shuffle(array) {
+    var m = array.length, t, i;
+
+    // While there remain elements to shuffle…
+    while (m) {
+        console.log('m', m);
+        // Pick a remaining element…
+        i = Math.floor(Math.random() * m);
+        m--;
+        console.log('i', i);
+
+
+        // And swap it with the current element.
+        t = array[m];
+        console.log('t', t);
+
+        array[m] = array[i];
+        console.log('array[m]', array[m]);
+
+        array[i] = t;
+        console.log('array[i]', array[i]);
+    }
+
+    return array;
+}
+
+console.log(shuffle(cards)); */
