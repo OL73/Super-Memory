@@ -1,6 +1,9 @@
 let firstTab = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 let secondTab = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+const xTab = ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'];
 let compareElts = [];
+let eltsFound = [];
+let indexOfFinalTab = [];
 
 let row = document.querySelector('.row');
 
@@ -22,11 +25,11 @@ function randomTab(tab) {
 
 function init() {
 
-    for (let i = 0; i < finalTab.length; i++) {
+    for (let i = 0; i < xTab.length; i++) {
         let col = document.createElement('div');
         col.setAttribute('class', 'col-3');
         //col.onclick = () => chooseCard(finalTab[i]);
-        col.textContent = finalTab[i];
+        col.textContent = xTab[i];
         row.appendChild(col);
     }
 }
@@ -44,29 +47,48 @@ init();
 
 let divs = document.querySelectorAll('div[class=col-3]');
 
-
-
 for (let i = 0; i < divs.length; i++) {
     divs[i].addEventListener('click', () => {
-
-        compareElts.push(divs[i].textContent);
-        console.log(divs[i].textContent);
-
+        
+        divs[i].textContent = finalTab[i];
+        compareElts.push(finalTab[i]);
+        console.log(finalTab[i]);
+        indexOfFinalTab.push(i);
+        console.log('indexOfFinalTab', indexOfFinalTab);
+        
         if (compareElts.length == 2) {
-
+            let index1 = indexOfFinalTab[0];
+            let index2 = indexOfFinalTab[1];
+            
             if (compareElts[0] == compareElts[1]) {
 
                 console.log('gagné');
-            } else if (compareElts[0] != compareElts[1]) {
+                eltsFound = eltsFound.concat(compareElts);
+                divs[index1].textContent = finalTab[index1];
+                divs[index2].textContent = finalTab[index2];
                 compareElts = [];
+                console.log(eltsFound.length);
+                indexOfFinalTab = [];
+
+            } else if (compareElts[0] != compareElts[1]) {
+
+
+                setTimeout(() => {
+                    divs[index1].textContent = 'XX';
+                    divs[index2].textContent = 'XX';
+                }, 2000);
+                
+                indexOfFinalTab = [];
+                compareElts = [];
+
             }
-
-
         }
 
     });
-
 }
+
+
+
 
 
 
