@@ -1,3 +1,59 @@
+/* body {
+    background-image: url('./../assets/img/play.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+} */
+
 h1 {
-    color:yellow;
+    color: yellow;
+}
+
+#cards {
+    position: relative;
+    transition: all 1s;
+}
+
+.elements {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+}
+
+.element {
+    cursor: pointer;
+    width: 20%;
+    padding: 5px;
+    img {
+        transition: all 1.5s;
+        width: 100%;
+        padding: 10px;
+        box-shadow: 2px 2px 3px -1px rgba(0,0,0,0.55);
+    }
+}
+
+.nope {
+    background-color: red;
+}
+
+.win {
+    background-color: rgba(191, 249, 106, 0.769);
+}
+
+.warning {
+    background-color: orange;
+}
+
+#game-over {
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    width:80%;
+    height: 57%;
+    margin: auto;
+    img {
+        width: 100%;
+        border-radius: 15px;
+    }
 }

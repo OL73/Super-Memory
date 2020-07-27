@@ -1,11 +1,15 @@
 let firstTab = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 let secondTab = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-const xTab = ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'];
+const xTab = ['question-icon2', 'question-icon', 'question-icon2', 'question-icon', 'question-icon2', 'question-icon', 'question-icon2', 'question-icon', 'question-icon2', 'question-icon', 'question-icon2', 'question-icon', 'question-icon2', 'question-icon', 'question-icon2', 'question-icon', 'question-icon2', 'question-icon', 'question-icon2', 'question-icon'];
 let compareElts = [];
 let eltsFound = [];
 let indexOfFinalTab = [];
+let compteur = 0;
 
-let row = document.querySelector('.row');
+let elements = document.querySelector('.elements');
+let inputScore = document.querySelector('input');
+
+
 
 function randomTab(tab) {
 
@@ -26,11 +30,13 @@ function randomTab(tab) {
 function init() {
 
     for (let i = 0; i < xTab.length; i++) {
-        let col = document.createElement('div');
-        col.setAttribute('class', 'col-3');
-        //col.onclick = () => chooseCard(finalTab[i]);
-        col.textContent = xTab[i];
-        row.appendChild(col);
+        let element = document.createElement('div');
+        element.setAttribute('class', 'element');
+        let img = document.createElement('img');
+        img.setAttribute('src', `./assets/img/${xTab[i]}.png`);
+        element.appendChild(img);
+        //col.textContent = xTab[i];
+        elements.appendChild(element);
     }
 }
 
@@ -45,43 +51,75 @@ console.log(finalTab);
 
 init();
 
-let divs = document.querySelectorAll('div[class=col-3]');
+let divs = document.querySelectorAll('div[class=element]');
+let imgs = document.querySelectorAll('div[class=element] img');
 
-for (let i = 0; i < divs.length; i++) {
-    divs[i].addEventListener('click', () => {
-        
-        divs[i].textContent = finalTab[i];
+for (let i = 0; i < imgs.length; i++) {
+    imgs[i].addEventListener('click', () => {
+
+        imgs[i].setAttribute('src', `./assets/img/${finalTab[i]}.png`);
         compareElts.push(finalTab[i]);
         console.log(finalTab[i]);
         indexOfFinalTab.push(i);
         console.log('indexOfFinalTab', indexOfFinalTab);
-        
+        compteur++;
+        inputScore.value = compteur;
+
         if (compareElts.length == 2) {
             let index1 = indexOfFinalTab[0];
             let index2 = indexOfFinalTab[1];
-            
+
+            if (index1 === index2) {
+                console.log('même index !!!');
+                compareElts.pop();
+                indexOfFinalTab.pop();
+                divs[index1].classList.add('warning');
+                setTimeout(() => {
+                    divs[index1].classList.remove('warning');
+                }, 1000);
+            }
+
             if (compareElts[0] == compareElts[1]) {
 
                 console.log('gagné');
                 eltsFound = eltsFound.concat(compareElts);
-                divs[index1].textContent = finalTab[index1];
-                divs[index2].textContent = finalTab[index2];
+                imgs[index1].classList.add('win');
+                imgs[index2].classList.add('win');
                 compareElts = [];
-                console.log(eltsFound.length);
+                console.log('Nb éléments trouvés : ', eltsFound.length);
                 indexOfFinalTab = [];
 
             } else if (compareElts[0] != compareElts[1]) {
 
 
                 setTimeout(() => {
-                    divs[index1].textContent = 'XX';
-                    divs[index2].textContent = 'XX';
-                }, 2000);
-                
+                    imgs[index1].classList.add('nope');
+                    imgs[index2].classList.add('nope');
+                    setTimeout(() => {
+                        imgs[index1].setAttribute('src', `./assets/img/${xTab[index1]}.png`);
+                        imgs[index2].setAttribute('src', `./assets/img/${xTab[index2]}.png`);
+                        imgs[index1].classList.remove('nope');
+                        imgs[index2].classList.remove('nope');
+                    }, 1000)
+                }, 500);
+
+
                 indexOfFinalTab = [];
                 compareElts = [];
 
             }
+        }
+
+        if (eltsFound.length == 20) {
+            console.log('partie terminée !!!');
+            let cards = document.getElementById('cards');
+            let divGameOver = document.createElement('div');
+            let imgGameOver = document.createElement('img');
+            divGameOver.setAttribute('id', 'game-over');
+            imgGameOver.setAttribute('src', './assets/img/Game_Over.jpg');
+            cards.appendChild(divGameOver);
+            divGameOver.appendChild(imgGameOver);
+            console.log('compteur', compteur);
         }
 
     });
