@@ -1,15 +1,19 @@
 let firstTab = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 let secondTab = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-const xTab = ['question-icon2', 'question-icon', 'question-icon2', 'question-icon', 'question-icon2', 'question-icon', 'question-icon2', 'question-icon', 'question-icon2', 'question-icon', 'question-icon2', 'question-icon', 'question-icon2', 'question-icon', 'question-icon2', 'question-icon', 'question-icon2', 'question-icon', 'question-icon2', 'question-icon'];
+const xTab = ['question-icon', 'question-icon', 'question-icon', 'question-icon', 'question-icon', 'question-icon', 'question-icon', 'question-icon', 'question-icon', 'question-icon', 'question-icon', 'question-icon', 'question-icon', 'question-icon', 'question-icon', 'question-icon', 'question-icon', 'question-icon', 'question-icon', 'question-icon'];
 let compareElts = [];
 let eltsFound = [];
 let indexOfFinalTab = [];
 let compteur = 0;
 
 let elements = document.querySelector('.elements');
-let inputScore = document.querySelector('input');
-
-
+let score = document.querySelector('#score');
+let highScoreStorage;
+let highScore = document.querySelector('#highScore');
+score.textContent = '0';
+//highScoreStorage ? highScore.textContent = highScoreStorage : highScore.textContent = 0;
+localStorage.getItem('highScore') ? highScoreStorage = localStorage.getItem('highScore') : highScoreStorage = 0;
+highScore.textContent = highScoreStorage;
 
 function randomTab(tab) {
 
@@ -63,7 +67,7 @@ for (let i = 0; i < imgs.length; i++) {
         indexOfFinalTab.push(i);
         console.log('indexOfFinalTab', indexOfFinalTab);
         compteur++;
-        inputScore.value = compteur;
+        score.textContent = compteur;
 
         if (compareElts.length == 2) {
             let index1 = indexOfFinalTab[0];
@@ -91,7 +95,6 @@ for (let i = 0; i < imgs.length; i++) {
 
             } else if (compareElts[0] != compareElts[1]) {
 
-
                 setTimeout(() => {
                     imgs[index1].classList.add('nope');
                     imgs[index2].classList.add('nope');
@@ -103,10 +106,8 @@ for (let i = 0; i < imgs.length; i++) {
                     }, 1000)
                 }, 500);
 
-
                 indexOfFinalTab = [];
                 compareElts = [];
-
             }
         }
 
@@ -118,84 +119,15 @@ for (let i = 0; i < imgs.length; i++) {
             divGameOver.setAttribute('id', 'game-over');
             imgGameOver.setAttribute('src', './assets/img/Game_Over.jpg');
             cards.appendChild(divGameOver);
-            divGameOver.appendChild(imgGameOver);
+            setTimeout(() => {
+                divGameOver.appendChild(imgGameOver);
+            }, 750);
             console.log('compteur', compteur);
+            if (compteur < Number(highScoreStorage)) {
+                localStorage.setItem('highScore', compteur.toString());
+                highScore.textContent = compteur;
+            }
         }
 
     });
 }
-
-
-
-
-
-
-
-
-/*
-//-------------------------------
-// entree : le tableau a randommer
-// sortie : le tableau randomme
-//-------------------------------
-function Rand_Tableau( tab_){
-    var i;
-    var Num;
-    var Nbr = tab_.length; // 10
-    var Tab = tab_; // cards
-    //-- Lance la boucle
-    while( Nbr> 0){
-      //-- Recup nombre aleatoire
-      Num = Math.floor(Math.random() * Nbr);
-      console.log('Num', Num);
-      //-- 1 de moins a traiter
-      Nbr--;
-      //-- Stock element tire
-      szTmp = Tab[Num];
-      console.log('szTmp', szTmp);
-      //-- Decalage des valeurs du tableau
-      for( i= Num; i < Nbr; i++)
-        Tab[i] = Tab[i+1]
-        console.log('Tab[i]', Tab[i]);
-      //-- Stock l'element tire en fin
-      Tab[ Nbr] = szTmp;
-      console.log('Tab[ Nbr]', Tab[ Nbr]);
-    }
-    //-- On peut remettre dans l'ordre du tirage
-    Tab.reverse();
-    //-- Retourne resultat
-    return( Tab);
-  }
-
-    //-- Random du tableau
-    Tab = Rand_Tableau(cards);
-
-//console.log(random);
-
-// exemple 2 :
-function shuffle(array) {
-    var m = array.length, t, i;
-
-    // While there remain elements to shuffle…
-    while (m) {
-        console.log('m', m);
-        // Pick a remaining element…
-        i = Math.floor(Math.random() * m);
-        m--;
-        console.log('i', i);
-
-
-        // And swap it with the current element.
-        t = array[m];
-        console.log('t', t);
-
-        array[m] = array[i];
-        console.log('array[m]', array[m]);
-
-        array[i] = t;
-        console.log('array[i]', array[i]);
-    }
-
-    return array;
-}
-
-console.log(shuffle(cards)); */
